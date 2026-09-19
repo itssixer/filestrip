@@ -1,0 +1,38 @@
+{
+  "name": "@filestrip/worker",
+  "version": "1.0.0",
+  "description": "Scrub image metadata on Cloudflare Workers before the object hits R2 or KV.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "LICENSE", "README.md"],
+  "scripts": {
+    "build": "tsc --build"
+  },
+  "dependencies": {
+    "@filestrip/core": "^1.0.0"
+  },
+  "peerDependencies": {
+    "hono": "^4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "hono": { "optional": true }
+  },
+  "keywords": ["cloudflare", "workers", "r2", "kv", "hono", "exif", "privacy", "strip-engine"],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/itssixer/filestrip.git",
+    "directory": "packages/worker"
+  }
+}

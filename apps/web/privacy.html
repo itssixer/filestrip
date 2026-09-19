@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy — FILESTRIP</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="top">
+  <a class="brand" href="/">
+    <svg width="22" height="22" viewBox="3 2.8 12 12.4" fill="none" aria-hidden="true">
+      <path d="M4 3.5h7.2L14 6.2V14.5H4V3.5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+      <path d="M11 3.5V6.2h3" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+    </svg>
+    <span class="brand-word">FILESTRIP</span>
+  </a>
+  <a class="engine" href="https://github.com/itssixer/filestrip#readme" target="_blank" rel="noreferrer">
+    <span class="engine-dot" aria-hidden="true"></span>
+    Powered by STRIP Engine <b>v1.0</b>
+  </a>
+</div>
+
+<div class="wrap">
+  <div class="copy" style="padding:0;border:0;max-width:40em">
+    <h1>Privacy</h1>
+    <p>
+      Your files never leave this device. The STRIP Engine runs entirely in your
+      browser — purging, classification, and PII scanning all happen in memory
+      and in a Web Worker. There is no upload endpoint, no cookies, and no
+      analytics.
+    </p>
+    <p style="margin-top:14px">
+      One exception: if a photo contains GPS coordinates and you open Inspect,
+      the map tiles are loaded from OpenStreetMap. That is the only third-party
+      request this site can make, it only happens for photos that carry
+      location data, and only the coordinates already inside your own photo are
+      used.
+    </p>
+    <p style="margin-top:14px">
+      Server-side sanitization belongs in your own infrastructure. Use
+      <code>@filestrip/worker</code> on the Cloudflare Worker that owns your
+      storage bucket — the browser is not a trust boundary.
+    </p>
+  </div>
+</div>
+
+<div class="bottom">
+  <a href="https://github.com/itssixer/filestrip/tree/main/packages/core" target="_blank" rel="noreferrer">Core</a>
+  <a href="https://github.com/itssixer/filestrip/tree/main/docs" target="_blank" rel="noreferrer">Docs</a>
+  <a href="privacy.html">Privacy</a>
+  <a href="https://github.com/itssixer/filestrip" target="_blank" rel="noreferrer">Source</a>
+</div>
+
+</body>
+</html>

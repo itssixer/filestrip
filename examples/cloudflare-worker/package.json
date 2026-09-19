@@ -1,0 +1,21 @@
+{
+  "name": "@filestrip/example-cloudflare-worker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Scrubs image metadata at the edge before storing objects in Cloudflare R2.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail"
+  },
+  "dependencies": {
+    "@filestrip/core": "^1.0.0",
+    "@filestrip/worker": "^1.0.0",
+    "hono": "^4.7.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}

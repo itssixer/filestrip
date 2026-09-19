@@ -1,0 +1,15 @@
+# Cloudflare Pages — static site for filestrip.com
+# Build command:  npm install && npm run build
+# Output directory: apps/web/dist
+#
+# wrangler pages deploy apps/web/dist --project-name filestrip
+
+name = "filestrip"
+compatibility_date = "2026-01-15"
+pages_build_output_dir = "apps/web/dist"
+
+[vars]
+ENGINE = "STRIP"
+
+[observability]
+enabled = true

@@ -1,0 +1,23 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.wrangler/
+.astro/
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.env
+.env.*
+.vscode/
+.idea/
+
+# Never commit real photos — they carry the GPS this project exists to remove.
+*.jpg
+*.jpeg
+*.png
+*.webp
+*.heic
+!apps/web/**/*.svg
+!docs/social-preview.png
+!.github/social-preview.png

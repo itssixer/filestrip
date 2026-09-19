@@ -1,0 +1,28 @@
+{
+  "name": "filestrip",
+  "private": true,
+  "description": "High-performance, zero-trust media sanitization suite & edge SDK. Runs deep binary telemetry purges (EXIF/GPS/serials/EOF), browser-native vision AI (explicit content & deepfakes), local WASM PII detection (IDs/cards/faces), and Cloudflare Worker edge enforcement.",
+  "license": "MIT",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build:packages && npm run build:web",
+    "build:packages": "tsc --build packages/core packages/vision packages/sentinel packages/worker packages/sdk",
+    "build:web": "npm run build --workspace=@filestrip/web",
+    "clean": "tsc --build --clean packages/core packages/vision packages/sentinel packages/worker packages/sdk",
+    "dev": "npm run dev --workspace=@filestrip/web",
+    "test": "npm run build:packages && node --test packages/*/test/*.test.js",
+    "typecheck": "tsc --build packages/core packages/vision packages/sentinel packages/worker packages/sdk",
+    "release:npm": "npm run build:packages && npm publish --workspace=@filestrip/core --workspace=@filestrip/vision --workspace=@filestrip/sentinel --workspace=@filestrip/worker --workspace=@filestrip/sdk --access public"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

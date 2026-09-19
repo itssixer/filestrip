@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/itssixer/filestrip/security/advisories/new
+    about: Metadata leaks and parser crashes — private report, not a public issue.
+  - name: Documentation
+    url: https://github.com/itssixer/filestrip/tree/main/docs
+    about: API reference, Workers and R2 guide, and framework integrations.

@@ -1,0 +1,39 @@
+{
+  "name": "@filestrip/vision",
+  "version": "1.0.0",
+  "description": "Off-thread NSFW classification and local perceptual hashes. No network.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": ["./dist/worker.js"],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./worker": {
+      "types": "./dist/worker.d.ts",
+      "default": "./dist/worker.js"
+    }
+  },
+  "files": ["dist", "LICENSE", "README.md"],
+  "scripts": {
+    "build": "tsc --build"
+  },
+  "peerDependencies": {
+    "onnxruntime-web": "^1.20.0"
+  },
+  "peerDependenciesMeta": {
+    "onnxruntime-web": { "optional": true }
+  },
+  "keywords": ["nsfw", "moderation", "perceptual-hash", "dhash", "phash", "offscreencanvas", "web-worker"],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/itssixer/filestrip.git",
+    "directory": "packages/vision"
+  }
+}

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="High-performance, zero-trust media sanitization suite powered by the STRIP Engine. EXIF/GPS purge, on-device vision, local PII, Cloudflare Workers.">
+<meta property="og:title" content="FILESTRIP — STRIP Engine">
+<meta property="og:description" content="Binary telemetry purge, browser-native vision AI, local PII detection, and Worker/R2 edge enforcement.">
+<meta property="og:image" content="https://raw.githubusercontent.com/itssixer/filestrip/main/docs/social-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<title>FILESTRIP</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-mode="sanitize">
+
+<div class="top">
+  <a class="brand" href="/">
+    <svg width="22" height="22" viewBox="3 2.8 12 12.4" fill="none" aria-hidden="true">
+      <path d="M4 3.5h7.2L14 6.2V14.5H4V3.5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+      <path d="M11 3.5V6.2h3" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+    </svg>
+    <span class="brand-word">FILESTRIP</span>
+  </a>
+
+  <div class="tabs" role="tablist">
+    <button type="button" class="tab on" id="tab-sanitize" role="tab" aria-selected="true">Sanitize</button>
+    <button type="button" class="tab" id="tab-inspect" role="tab" aria-selected="false">Inspect</button>
+  </div>
+
+  <a class="engine" href="https://github.com/itssixer/filestrip#readme" target="_blank" rel="noreferrer">
+    <span class="engine-dot" aria-hidden="true"></span>
+    Powered by STRIP Engine <b id="engine-version">v1.0</b>
+  </a>
+</div>
+
+<!-- ───────────────────────── Sanitize ───────────────────────── -->
+<div class="wrap" id="view-sanitize">
+  <div class="panel" id="sanitize-idle">
+    <div class="zone" id="zone">
+      <input type="file" id="file" accept="image/jpeg,image/png,image/webp" multiple hidden>
+      <div class="zone-inner">
+        <div class="plus">+</div>
+        <div class="zone-title" id="zone-title">Drag and drop files</div>
+        <div class="zone-sub" id="zone-sub">or paste with Ctrl+V</div>
+        <button type="button" class="go" id="pick">Select files</button>
+      </div>
+    </div>
+    <div class="copy">
+      <h1>Sanitize images instantly</h1>
+      <p>Paste or drop a photo. EXIF data is scrubbed, the canvas is cleaned, and the filename is randomized. Zero server uploads.</p>
+    </div>
+  </div>
+
+  <div class="panel result-panel" id="sanitize-result" hidden>
+    <div class="shot">
+      <img id="result-img" alt="Sanitized preview">
+      <dl class="stats" id="result-stats"></dl>
+    </div>
+    <div class="report">
+      <div class="badge-done">
+        <span class="badge-check" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 22 22" fill="none">
+            <path d="M5 11.5l4 4 8-8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        Sanitized &amp; Anonymized
+      </div>
+
+      <h2 class="report-title">Scrub summary</h2>
+      <p class="report-lede" id="scrub-headline"></p>
+      <ul class="scrub-list" id="scrub-list"></ul>
+
+      <div class="actions">
+        <button type="button" class="scrub" id="download-clean">Download Clean File</button>
+        <button type="button" class="again" id="sanitize-again">Sanitize another file</button>
+      </div>
+    </div>
+  </div>
+
+  <ul class="log" id="log"></ul>
+</div>
+
+<!-- ───────────────────────── Inspect ───────────────────────── -->
+<div class="wrap wrap-inspect" id="view-inspect" hidden>
+  <div class="panel" id="inspect-idle">
+    <div class="zone" id="izone">
+      <input type="file" id="ifile" accept="image/jpeg,image/png,image/webp" hidden>
+      <div class="zone-inner">
+        <div class="plus">+</div>
+        <div class="zone-title">Drop a file to inspect</div>
+        <div class="zone-sub">or paste with Ctrl+V</div>
+        <button type="button" class="go" id="ipick">Select file</button>
+      </div>
+    </div>
+    <div class="copy">
+      <h1>Inspect exposure risk</h1>
+      <p>Deep analysis before you purge. Telemetry, explicit-content rating, and identity-document detection all run off-thread on this device.</p>
+    </div>
+  </div>
+
+  <div class="panel inspect-panel" id="inspect-result" hidden>
+    <div class="shot">
+      <div class="preview" id="preview">
+        <img id="inspect-img" alt="Preview under analysis">
+        <button type="button" class="unblur" id="unblur" hidden>Unblur</button>
+      </div>
+      <div class="safety" id="safety"></div>
+      <div class="map" id="inspect-map" hidden>
+        <iframe id="inspect-map-frame" title="GPS location from EXIF" loading="lazy" referrerpolicy="no-referrer"></iframe>
+      </div>
+      <dl class="stats" id="inspect-stats"></dl>
+    </div>
+
+    <div class="report" id="inspect-report">
+      <div class="score" id="inspect-score">
+        <span>Exposure risk</span>
+        <b>Analyzing…</b>
+      </div>
+      <div id="inspect-sections"></div>
+      <div class="actions">
+        <button type="button" class="scrub" id="purge-all">Purge All Vectors &amp; Download Clean File</button>
+        <button type="button" class="again" id="inspect-again">Inspect another file</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bottom">
+  <a href="https://github.com/itssixer/filestrip/tree/main/packages/core" target="_blank" rel="noreferrer">Core</a>
+  <a href="https://github.com/itssixer/filestrip/tree/main/docs" target="_blank" rel="noreferrer">Docs</a>
+  <a href="privacy.html">Privacy</a>
+  <a href="https://github.com/itssixer/filestrip" target="_blank" rel="noreferrer">Source</a>
+</div>
+
+<script type="module" src="main.js"></script>
+</body>
+</html>

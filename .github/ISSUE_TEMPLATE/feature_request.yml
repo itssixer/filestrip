@@ -1,0 +1,46 @@
+name: Feature request
+description: Propose a format, integration, or API addition
+labels: ['enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        `@filestrip/core` stays dependency-free. Anything that needs a dependency or the DOM belongs in another package.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed API or behavior
+      render: js
+    validations:
+      required: true
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Where would this live
+      options:
+        - '@filestrip/core'
+        - '@filestrip/worker'
+        - '@filestrip/sdk'
+        - '@filestrip/vision'
+        - '@filestrip/sentinel'
+        - Docs or examples
+        - Not sure
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Constraints
+      options:
+        - label: Does not add a runtime dependency to `@filestrip/core`
+        - label: Works inside a Cloudflare Worker (no DOM, no native addons)

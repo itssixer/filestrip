@@ -1,0 +1,5 @@
+# Local Pages preview of the demo app.
+#   npx wrangler pages dev dist
+name = "filestrip"
+compatibility_date = "2026-01-15"
+pages_build_output_dir = "./dist"

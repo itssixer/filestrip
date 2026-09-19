@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test on Node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['20', '22', '24']
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node }}
+
+      - run: npm install
+      - run: npm test
+
+  build:
+    name: Build packages and static site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - run: npm install
+      - run: npm run build
+
+      - name: Verify the static site emitted its entry points
+        run: |
+          test -f apps/web/dist/index.html || { echo "missing index.html"; exit 1; }
+          test -f apps/web/dist/main.js    || { echo "missing main.js"; exit 1; }
+          test -f apps/web/dist/styles.css || { echo "missing styles.css"; exit 1; }
+          # A tree-shaken worker bundle is a silent failure mode, so assert size.
+          size=$(wc -c < apps/web/dist/vision.worker.js)
+          if [ "$size" -lt 1000 ]; then
+            echo "vision.worker.js is only ${size} bytes — it was tree-shaken away"
+            exit 1
+          fi
+          echo "static site OK (worker bundle ${size} bytes)"
+
+  constraints:
+    name: Architectural constraints
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - run: npm install
+
+      - name: Core must stay dependency-free
+        run: |
+          node -e "
+            const pkg = require('./packages/core/package.json');
+            const deps = Object.keys(pkg.dependencies || {});
+            if (deps.length) {
+              console.error('core must stay dependency-free, found:', deps.join(', '));
+              process.exit(1);
+            }
+            console.log('core is dependency-free');
+          "
+
+      - name: Core must not reference DOM globals outside browser.ts
+        run: |
+          # Matches member access (document.x) and real identifiers, so prose
+          # like the string 'PDF document' does not trip the check.
+          if grep -rnE '\b(document|window|navigator)\.|\b(OffscreenCanvas|createImageBitmap|HTMLCanvasElement)\b' \
+               packages/core/src --include='*.ts' \
+               | grep -v 'src/browser.ts'; then
+            echo "DOM usage found in a runtime-agnostic core module"
+            exit 1
+          fi
+          echo "core is runtime-agnostic"
+
+      - name: Core must load in a bare runtime
+        run: |
+          npm run build:packages
+          node --input-type=module -e "
+            import { sanitize, inspect, sniff, randomName, STRIP_ENGINE_VERSION } from './packages/core/dist/index.js';
+            if (sniff(new Uint8Array([0xff, 0xd8, 0xff])) !== 'jpeg') throw new Error('sniff broken');
+            if (!/^fs_[0-9a-f]{6}\.jpg$/.test(randomName('jpeg'))) throw new Error('naming broken');
+            const out = sanitize(new Uint8Array([0xff, 0xd8, 0xff, 0xfe, 0x00, 0x04, 0x41, 0x42, 0xff, 0xd9]));
+            if (!out.changed) throw new Error('comment was not stripped');
+            if (inspect(out.bytes).level !== 'Low') throw new Error('inspect broken');
+            console.log('core loads with no DOM present, engine', STRIP_ENGINE_VERSION);
+          "

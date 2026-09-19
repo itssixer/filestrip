@@ -1,0 +1,67 @@
+name: Bug report
+description: Metadata survived sanitization, a parser misbehaved, or an integration broke
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Security issue? Don't file it here — see [SECURITY.md](https://github.com/itssixer/filestrip/blob/main/SECURITY.md).
+
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      options:
+        - '@filestrip/core'
+        - '@filestrip/worker'
+        - '@filestrip/sdk'
+        - '@filestrip/vision'
+        - '@filestrip/sentinel'
+        - Demo app
+    validations:
+      required: true
+
+  - type: dropdown
+    id: runtime
+    attributes:
+      label: Runtime
+      options:
+        - Cloudflare Workers
+        - Cloudflare Pages
+        - Browser
+        - Node
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: 1.0.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: Format, and which tags survived if that's the bug.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      description: Code only. Don't attach photos that still have your GPS.
+      render: js
+    validations:
+      required: true

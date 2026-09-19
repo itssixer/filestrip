@@ -1,0 +1,16 @@
+name = "filestrip-edge"
+main = "src/index.ts"
+compatibility_date = "2026-01-01"
+
+# Sanitized objects land here. The original bytes are never written.
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "filestrip-media"
+
+# Optional: audit trail of what was scrubbed, keyed by object.
+[[kv_namespaces]]
+binding = "AUDIT"
+id = "replace-with-your-kv-namespace-id"
+
+[observability]
+enabled = true
